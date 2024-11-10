@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capacity Input</title>
+</head>
+<body>
+  <h1>Enter Capacity</h1>
+  <form id="capacityForm">
+    <label for="capacity">Capacity:</label>
+    <input type="number" id="capacity" name="capacity" required>
+    <button type="submit">Submit</button>
+  </form>
+
+  <h2>Output:</h2>
+  <div id="output">
+    <!-- Output from the server will appear here -->
+  </div>
+
+  <script>
+    document.getElementById('capacityForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent form submission
+
+      const capacity = document.getElementById('capacity').value;
+      fetch('/processCapacity', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ capacity: capacity })
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('output').innerHTML = `
+          <p>${data.output1}</p>
+          <p>${data.output2}</p>
+          <p>${data.output3}</p>
+        `;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+  </script>
+</body>
+</html>
